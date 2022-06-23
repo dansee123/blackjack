@@ -7,34 +7,78 @@ class Player:
     def __init__(self, name, balance=1000):
         self.name = name
         self.balance = balance
+        self.hand = []
+        self.value = 0
+        self.playing = True
 
     def __repr__(self):
-        print('{name} has {money}'.format(name=self.name, money = self.balance))
+        return '{name} has the cards {cards} with a value of {value}'.format(name=self.name, cards=self.hand, value=self.value)
 
-   
-class Hand:
-
-    def deal():
-        deck = []
+    def player_hand(self):
         for card in range(2):
             random.shuffle(deck)
             card = deck.pop()
-            deck.append(card)
-        return deck
+            self.hand.append(card)
+        return self.hand
 
-    def value(hand):
-        value = 0
-        for card in hand:
+    def player_value(self):
+        self.value = 0
+        for card in self.hand:
             if 'JKQ' in card:
-                value += 10
+                self.value += 10
             elif 'A' in card:
-                if value + 11 > 21:
-                    value += 1
+                if self.value + 11 > 21:
+                    self.value += 1
                 else:
-                    value += 11
+                    self.value += 11
             else:
-                value += card
-        return value
+                self.value += card
+        return self.value
+
+    def keep_playing(self):
+        looping = True
+        while looping == True:
+            playing = input('Would you like to keep playing? Enter Y or N: ')
+            if playing.upper() == 'Y':
+                self.playing = True
+                looping = False
+            elif playing.upper() == 'N':
+                self.playing = False
+                looping = False
+            else:
+                print('Invalid input')
+        return self.playing
+        
+            
+class Dealer:
+
+    def __init__(self):
+        self.hand = []
+        self.value = 0
+
+    def __repr__(self):
+        return 'Dealer has the cards {cards} with a value of {value}'.format(cards=self.hand, value=self.value)
+
+    def dealer_hand(self):
+        for card in range(2):
+            random.shuffle(deck)
+            card = deck.pop()
+            self.hand.append(card)
+        return self.hand
+
+    def dealer_value(self):
+        self.value = 0
+        for card in self.hand:
+            if 'JKQ' in card:
+                self.value += 10
+            elif 'A' in card:
+                if self.value + 11 > 21:
+                    self.value += 1
+                else:
+                    self.value += 11
+            else:
+                self.value += card
+        return self.value
             
 
 class Blackjack:
@@ -45,6 +89,9 @@ class Blackjack:
 
     def __repr__(self):
         print('£{won} has been lost and £{lost} has been lost'.format(self.won, self.lost))
+
+    def game(self, value)
+
 
 
 
