@@ -1,5 +1,4 @@
 import random
-import itertools
 
 deck = [2,3,4,5,6,7,8,9,10,'J','K','Q','A']*4
 
@@ -12,15 +11,8 @@ class Player:
     def __repr__(self):
         print('{name} has {money}'.format(name=self.name, money = self.balance))
 
-
-class Dealer:
-    def __init__(self, name='House'):
-        self.name = name
-
-    
+   
 class Hand:
-    def __innit__(self, ):
-        pass
 
     def deal():
         deck = []
@@ -30,6 +22,20 @@ class Hand:
             deck.append(card)
         return deck
 
+    def value(hand):
+        value = 0
+        for card in hand:
+            if 'JKQ' in card:
+                value += 10
+            elif 'A' in card:
+                if value + 11 > 21:
+                    value += 1
+                else:
+                    value += 11
+            else:
+                value += card
+        return value
+            
 
 class Blackjack:
 
@@ -39,5 +45,7 @@ class Blackjack:
 
     def __repr__(self):
         print('£{won} has been lost and £{lost} has been lost'.format(self.won, self.lost))
+
+
 
 
