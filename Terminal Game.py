@@ -46,10 +46,36 @@ class Player:
                 self.playing = False
                 looping = False
             else:
-                print('Invalid input')
+                print('Invalid input. Please try again...')
         return self.playing
-        
-            
+
+    def place_wager(self):
+        looping = True
+        while looping == True:
+            wager = input('Please enter the amount that you would like to bet: ')
+            if wager > self.balance:
+                print('You cannot bet that much! Please try again...')
+            elif type(wager) is not int:
+                print('You must enter a integer value. Please try again...')
+            else:
+                looping = False
+        return wager
+
+    def hit_or_stand(self):
+        looping = True
+        while looping == True:
+            hit_or_stand = input('Would you like to hit or stand? Enter H for hit or S for stand: ')
+            if hit_or_stand.upper() == 'H':
+                random.shuffle(deck)
+                card_to_add = deck.pop()
+                self.hand.append(card_to_add)
+                looping = False
+            elif hit_or_stand.upper == 'S':
+                looping = False
+            else:
+                print('Invalid input. Please try again...')
+        return self.hand
+              
 class Dealer:
 
     def __init__(self):
@@ -79,6 +105,12 @@ class Dealer:
                 else:
                     self.value += 11       
         return self.value
+    
+    def hit(self):
+        random.shuffle(deck)
+        card_to_add = deck.pop()
+        self.hand.append(card_to_add)
+        return self.hand
             
 
 class Blackjack:
@@ -90,16 +122,35 @@ class Blackjack:
     def __repr__(self):
         print('£{won} has been lost and £{lost} has been lost'.format(self.won, self.lost))
 
+    def play(self):
+        
+        play = True
+        while play == True:
+            player = Player(input('Please enter your name: '))
+            dealer = Dealer()
+            wager = Player.place_wager(player)
+            player_hand = Player.player_hand(player)
+            dealer_hand = Dealer.dealer_hand(dealer)
+            player_value = Player.player_value(player)
+            dealer_value = Dealer.dealer_value(dealer)
 
-player = Player(input('Please enter your name: '))
-dealer = Dealer()
-player_hand = Player.player_hand(player)
-dealer_hand = Dealer.dealer_hand(dealer)
-player_value = Player.player_value(player)
-dealer_value = Dealer.dealer_value(dealer)
+            print(repr(player))
+            print(repr(dealer))
 
-print(repr(player))
-print(repr(dealer))
+
+
+
+
+
+
+
+            play = Player.keep_playing(player)
+
+
+
+
+
+
 
 
 
