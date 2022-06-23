@@ -106,10 +106,13 @@ class Dealer:
                     self.value += 11       
         return self.value
     
-    def hit(self):
-        random.shuffle(deck)
-        card_to_add = deck.pop()
-        self.hand.append(card_to_add)
+    def hit_or_stand(self):
+        if self.value <= 17:
+            random.shuffle(deck)
+            card_to_add = deck.pop()
+            self.hand.append(card_to_add)
+        else:
+            print('The dealer stands')
         return self.hand
             
 
@@ -136,6 +139,11 @@ class Blackjack:
 
             print(repr(player))
             print(repr(dealer))
+
+            while player_value and dealer_value <21:
+                Player.hit_or_stand(player)
+                Dealer.hit_or_stand(dealer)
+
 
 
 
