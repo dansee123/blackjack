@@ -24,15 +24,15 @@ class Player:
     def player_value(self):
         self.value = 0
         for card in self.hand:
-            if 'JKQ' in card:
+            if type(card) == int:
+                self.value += card
+            elif 'JKQ' in card:
                 self.value += 10
             elif 'A' in card:
                 if self.value + 11 > 21:
                     self.value += 1
                 else:
-                    self.value += 11
-            else:
-                self.value += card
+                    self.value += 11       
         return self.value
 
     def keep_playing(self):
@@ -69,15 +69,15 @@ class Dealer:
     def dealer_value(self):
         self.value = 0
         for card in self.hand:
-            if 'JKQ' in card:
+            if type(card) == int:
+                self.value += card
+            elif 'JKQ' in card:
                 self.value += 10
             elif 'A' in card:
                 if self.value + 11 > 21:
                     self.value += 1
                 else:
-                    self.value += 11
-            else:
-                self.value += card
+                    self.value += 11       
         return self.value
             
 
@@ -90,7 +90,16 @@ class Blackjack:
     def __repr__(self):
         print('£{won} has been lost and £{lost} has been lost'.format(self.won, self.lost))
 
-    def game(self, value)
+
+player = Player(input('Please enter your name: '))
+dealer = Dealer()
+player_hand = Player.player_hand(player)
+dealer_hand = Dealer.dealer_hand(dealer)
+player_value = Player.player_value(player)
+dealer_value = Dealer.dealer_value(dealer)
+
+print(repr(player))
+print(repr(dealer))
 
 
 
