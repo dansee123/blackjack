@@ -65,6 +65,8 @@ class Player:
             wager = input('Please enter the amount that you would like to bet: ')
             if int(wager) > self.balance:
                 print('You cannot bet that much! Please try again...')
+            elif int(wager) == 0:
+                print('You cannot bet 0! Please try again...')
             else:
                 looping = False
         return wager
