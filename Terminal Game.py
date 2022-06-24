@@ -179,6 +179,7 @@ class Blackjack:
         play = True
         player = Player(input('Please enter your name: '))
         dealer = Dealer()
+        print(Player.balance_check(player))
         while play == True:
             player_hitting = True
             dealer_hitting = True
