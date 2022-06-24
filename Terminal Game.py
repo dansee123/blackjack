@@ -9,6 +9,7 @@ class Player:
         self.balance = balance
         self.hand = []
         self.value = 0
+
         self.playing = True
         self.hitting = True
 
@@ -19,6 +20,7 @@ class Player:
         return 'You have a balance of {}'.format(self.balance)
 
     def player_hand(self):
+        self.hand = []
         for card in range(2):
             random.shuffle(deck)
             card = deck.pop()
@@ -89,7 +91,7 @@ class Player:
 
 
     def win(self, wager):
-        if self.value == 21:
+        if self.value == 21 and len(self.hand) == 2:
             win = int(wager) * 2
             print('You got a blackjack! You won £{}'.format(win))
         else:
@@ -109,18 +111,25 @@ class Dealer:
 
     def __init__(self):
         self.hand = []
+        self.initial_card = []
         self.value = 0
         self.hitting = True
 
     def __repr__(self):
-        return 'Dealer has the cards {cards} with a value of {value}'.format(cards=self.hand, value=self.value)
+            return 'Dealer has the cards {cards} with a value of {value}'.format(cards=self.hand, value=self.value)
 
     def dealer_hand(self):
+        self.hand = []
         for card in range(2):
             random.shuffle(deck)
             card = deck.pop()
             self.hand.append(card)
         return self.hand
+
+    def initial_hand(self):
+        self.initial_card = []
+        self.initial_card = self.hand[0]
+        return self.initial_card
 
     def dealer_value(self):
         self.value = 0
@@ -139,20 +148,21 @@ class Dealer:
                 else:
                     self.value += 11     
         return self.value
-    
+
     def hit_or_stand(self):
-        if self.value <= 17:
+        if self.value <= 16:
             self.hitting = True
-        else:
+        elif self.value >=17:
             self.hitting = False
             print('The dealer stands')
         return self.hitting
 
     def card_to_add(self):
-        random.shuffle(deck)
-        card_to_add = deck.pop()
-        self.hand.append(card_to_add)
-        return self.hand
+        if self.hitting == True:
+            random.shuffle(deck)
+            card_to_add = deck.pop()
+            self.hand.append(card_to_add)
+            return self.hand
             
 
 class Blackjack:
@@ -168,50 +178,54 @@ class Blackjack:
         
         play = True
         player = Player(input('Please enter your name: '))
+        dealer = Dealer()
         while play == True:
-            dealer = Dealer()
+            player_hitting = True
+            dealer_hitting = True
             wager = Player.place_wager(player)
             player_hand = Player.player_hand(player)
-            dealer_hand = Dealer.dealer_hand(dealer)
             player_value = Player.player_value(player)
+            dealer_hand = Dealer.dealer_hand(dealer)
             dealer_value = Dealer.dealer_value(dealer)
+            dealer_initial_hand = Dealer.initial_hand(dealer)
 
-            print(repr(player))
-            print(repr(dealer))
+            print(player)
+            print('The dealer has a {}'.format(dealer_initial_hand))
 
-            player_hitting = True
             while player_hitting == True:
-                    player_hitting = Player.hit_or_stand(player)
-                    player.card_to_add()
-                    player.player_value()
-                    print(repr(player))
-                    if player_value >= 21:
+                if player.value >= 21:
                         player_hitting = False
                         dealer_hitting = False
-
-            dealer_hitting = True
+                        break
+                player_hitting = player.hit_or_stand()
+                player.card_to_add()
+                player.player_value()
+                print(player)
+                    
+            print(dealer)
             while dealer_hitting == True:
-                dealer_hitting = Dealer.hit_or_stand(dealer)
+                if dealer.value >= 21:
+                    dealer_hitting = False
+                    break
+                dealer_hitting = dealer.hit_or_stand()
                 dealer.card_to_add()
                 dealer.dealer_value()
-                print(repr(dealer))
-                if dealer_value >= 21:
-                    dealer_hitting = False
+                print(dealer)
                 
-
-            if player_value <= 21 and dealer_value > 21:
+            
+            if player.player_value() <= 21 and dealer.dealer_value() > 21:
                 Player.win(player,wager)
                 another_round = False
-            elif player_value > 21 and dealer_value <= 21:
+            elif player.player_value() > 21 and dealer.dealer_value() <= 21:
                 Player.lose(player,wager)
                 another_round = False
-            elif player_value > dealer_value and player_value <= 21:
+            elif player.player_value() > dealer.dealer_value() and player.player_value() <= 21:
                 Player.win(player,wager)
                 another_round = False
-            elif player_value < 21 and player_value < dealer_value:
+            elif player.player_value() < 21 and player.player_value() < dealer.dealer_value():
                 Player.lose(player,wager)
                 another_round = False
-            elif player_value == dealer_value:
+            elif player.player_value() == dealer.dealer_value():
                 print ('Push')
 
             print(Player.balance_check(player))
